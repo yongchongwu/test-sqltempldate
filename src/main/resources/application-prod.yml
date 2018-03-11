@@ -1,0 +1,17 @@
+spring:
+  devtools:
+    restart:
+        enabled: false
+      livereload:
+        enabled: false
+
+server:
+  port: 8080
+    compression:
+      enabled: true
+        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
+        min-response-size: 1024
+
+sqltemplate:
+  autoload: false
+  dialect: mysql

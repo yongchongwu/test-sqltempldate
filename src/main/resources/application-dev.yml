@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+server:
+  port: 8080
+
+sqltemplate:
+  autoload: true
+  dialect: mysql

@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: test-sqltemplate
+  profiles:
+    active: #spring.profiles.active#
+
+sqltemplate:
+  template-location: sqltemplate/**/*.xml
