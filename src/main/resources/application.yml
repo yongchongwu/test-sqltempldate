@@ -3,6 +3,12 @@ spring:
     name: test-sqltemplate
   profiles:
     active: #spring.profiles.active#
-
+  thymeleaf:
+    mode: HTML5
+    encoding: UTF-8
+    content-type: text/html
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
 sqltemplate:
   template-location: sqltemplate/**/*.xml

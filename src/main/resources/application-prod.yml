@@ -4,7 +4,6 @@ spring:
         enabled: false
       livereload:
         enabled: false
-
 server:
   port: 8080
     compression:

@@ -6,6 +6,8 @@ spring:
       enabled: false
     livereload:
       enabled: false
+  thymeleaf:
+    cache: false
 server:
   port: 8080
 

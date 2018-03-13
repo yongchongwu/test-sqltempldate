@@ -9,18 +9,19 @@ import java.util.Collection;
 import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.core.env.Environment;
 
 @SpringBootApplication
-public class TestSqltempldateApplication {
+public class DemoApplication {
 
-  private static final Logger log = LoggerFactory.getLogger(TestSqltempldateApplication.class);
+  private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
 
   private final Environment env;
 
-  public TestSqltempldateApplication(Environment env) {
+  public DemoApplication(Environment env) {
     this.env = env;
   }
 
@@ -41,8 +42,8 @@ public class TestSqltempldateApplication {
 
   public static void main(String[] args) throws UnknownHostException {
     //SpringApplication.run(TestSqltempldateApplication.class, args);
-    SpringApplication app = new SpringApplication(TestSqltempldateApplication.class);
-    //app.setBannerMode(Banner.Mode.OFF);// 关闭启动Banner
+    SpringApplication app = new SpringApplication(DemoApplication.class);
+    app.setBannerMode(Banner.Mode.OFF);// 关闭启动Banner
 
     DefaultProfileUtil.addDefaultProfile(app);
 
@@ -54,15 +55,17 @@ public class TestSqltempldateApplication {
     }
     log.info("\n----------------------------------------------------------\n\t" +
             "Application '{}' is running! Access URLs:\n\t" +
-            "Local: \t\t{}://localhost:{}\n\t" +
-            "External: \t{}://{}:{}\n\t" +
+            "Local: \t\t{}://localhost:{}{}\n\t" +
+            "External: \t{}://{}:{}{}\n\t" +
             "Profile(s): \t{}\n----------------------------------------------------------",
         env.getProperty("spring.application.name"),
         protocol,
         env.getProperty("server.port"),
+        env.getProperty("server.context-path")==null?"":env.getProperty("server.context-path"),
         protocol,
         InetAddress.getLocalHost().getHostAddress(),
         env.getProperty("server.port"),
+        env.getProperty("server.context-path")==null?"":env.getProperty("server.context-path"),
         env.getActiveProfiles());
   }
 }

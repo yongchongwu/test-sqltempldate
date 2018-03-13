@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>WebSocket广播式</title>
+  <link href="/static/bootstrap/css/bootstrap.css" th:href="@{/bootstrap/css/bootstrap.min.css}"
+        rel="stylesheet"/>
+  <link href="/static/bootstrap/css/bootstrap-theme.css"
+        th:href="@{/bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+</head>
+<body onload="disconnect()">
+<noscript><h2 style="color:#ff0000">貌似你的浏览器不支持websocket</h2></noscript>
+<div>
+  <div>
+    <button id="connect" onclick="connect();">连接</button>
+    <button id="disconnect" disabled="disabled" onclick="disconnect();">断开连接</button>
+  </div>
+  <div id="conversionDiv">
+    <label>输入你的名字</label><input type="text" id="name"/>
+    <button id="sendName" onclick="sendName();">发送</button>
+    <p id="response"></p>
+  </div>
+</div>
+<script src="/static/sockjs.min.js" th:src="@{/sockjs.min.js}" type="text/javascript"></script>
+<script src="/static/stomp.js" th:src="@{/stomp.js}" type="text/javascript"></script>
+<script src="/static/jquery-1.12.4.min.js" th:src="@{/jquery-1.12.4.min.js}"
+        type="text/javascript"></script>
+<script type="text/javascript">
+  var stompClient = null;
+
+  function setConnected(connected) {
+    document.getElementById('connect').disabled = connected;
+    document.getElementById('disconnect').disabled = !connected;
+    document.getElementById('conversionDiv').style.visibility = connected ? 'visible' : 'hidden';
+    $('#response').html();
+  }
+
+  function connect() {
+    var socket= new SockJS('/endpoint');
+    stompClient=Stomp.over(socket);
+    stompClient.connect({},function (frame) {
+      setConnected(true);
+      console.log('Connected: '+frame);
+      stompClient.subscribe('/topic/getResponse',function (response) {
+        showResponse(JSON.parse(response.body).responseMessage);
+      });
+    });
+  }
+
+  function disconnect() {
+    if(stompClient!=null){
+      stompClient.disconnect();
+    }
+    setConnected(false);
+    console.log('Disconnected')
+  }
+  
+  function sendName() {
+    var name=$('#name').val();
+    stompClient.send('/welcome',{},JSON.stringify({'name':name}));
+  }
+
+  function showResponse(message) {
+    var response=$('#response');
+    response.html(message);
+  }
+
+</script>
+</body>
+</html>
